@@ -34,8 +34,8 @@ console.log('output: ' + sumAllElements(array3))
 function sumAllElements(array) {
     let total = 0
     for (const num of array) {
-        if(isNaN(num)) {
-            return 'valor invalido detectado'
+        if(typeof num !== 'number') {
+            return 'Valor inválido detectado'
         }
         total += num
       }
