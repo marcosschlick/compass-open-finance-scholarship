@@ -21,10 +21,6 @@ output: "valor invalido detectado"
 const num1 = 7
 const num2 = 10
 const num3 = 'xpto'
-const num4 = 1
-const num5 = 143413467
-const num6 = 13
-const num7 = 3
 
 console.log('input: ' + num1)
 console.log('output: ' + isPrime(num1))
@@ -35,21 +31,9 @@ console.log('output: ' + isPrime(num2))
 console.log('input: ' + num3)
 console.log('output: ' + isPrime(num3))
 
-console.log('input: ' + num4)
-console.log('output: ' + isPrime(num4))
-
-console.log('input: ' + num5)
-console.log('output: ' + isPrime(num5))
-
-console.log('input: ' + num6)
-console.log('output: ' + isPrime(num6))
-
-console.log('input: ' + num7)
-console.log('output: ' + isPrime(num7))
-
 function isPrime(number) {
-    if(isNaN(number)) {
-        return 'valor invalido detectado'
+    if(typeof number !== 'number') {
+        return 'Valor inválido detectado'
     }
     let count = 0
     for (i = 1; i <= number; i++) {
