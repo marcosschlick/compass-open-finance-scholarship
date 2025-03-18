@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokenpô</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div>
+        <h1>Pedra, Papel e Tesoura</h1>
+    </div>
+    <div class="images">
+        <img src="img/you.png" alt="mão apontando para o jogador">
+        <p>VS</p>
+        <img src="img/robot.png" alt="robo sentado mexendo no notebook">
+    </div>
+    <div id="escolhas">
+        <button onclick="play('pedra')">Pedra</button>
+        <button onclick="play('papel')">Papel</button>
+        <button onclick="play('tesoura')">Tesoura</button>
+    </div>
+    <div id="resultado-container">
+        <p>Você escolheu: <img src="" alt="" id="player" class="resposta"></p>
+        <p>Computador escolheu: <img src="" alt="" id="computer" class="resposta"></p>
+    </div>
+    <div>
+        <p>Resultado: <span id="resultado"></span></p>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
