@@ -1,4 +1,5 @@
 const { createServer } = require('node:http');
+const { https } = require('node:https');
 const { URL } = require('node:url');
 
 const hostname = '127.0.0.1';
@@ -23,7 +24,6 @@ const server = createServer((request, response) => {
             }));
         } 
         
-
         else if (request.method === 'GET' && url.pathname === '/is-prime-number') {
 
             const queryParams = Object.fromEntries(url.searchParams.entries());
@@ -65,6 +65,26 @@ const server = createServer((request, response) => {
             });
 
         } 
+        else if (request.method === 'GET' && url.pathname === '/stock-insight') {
+            const queryParams = Object.fromEntries(url.searchParams.entries());
+            const https = require('node:https');
+            const moeda = queryParams.currency === 'brl' ? 'brl' : 'usd';
+        
+            https.get(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${moeda}`, (apiResponse) => {
+                let apiResponseData = '';
+                apiResponse.on('data', (chunk) => apiResponseData += chunk);
+                apiResponse.on('end', () => {
+                    const priceData = JSON.parse(apiResponseData); 
+                    const valor = priceData.bitcoin[moeda]; 
+
+                    response.statusCode = 200;
+                    response.end(JSON.stringify({ 
+                        bitcoin: valor, 
+                        momento: getPriceMoment(moeda, valor)
+                    }));
+                });
+            });
+        }
         
         else {
             response.statusCode = 404;
@@ -82,3 +102,35 @@ const server = createServer((request, response) => {
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+function getPriceMoment(moeda, valor) {
+    if (moeda === 'brl') {
+        if (valor < 300000) {
+            return 'Bom momento para compra!'
+        } else if (valor > 300000 && valor < 450000) {
+            return 'Preço razoável. Avalie antes de comprar.'
+        } else {
+            return 'Bitcoin está caro. Pode ser melhor esperar.'
+        }
+    } else {
+        if (valor < 60000) {
+            return 'Bom momento para compra!'
+        } else if (valor > 60000 && valor < 80000) {
+            return 'Preço razoável. Avalie antes de comprar.'
+        } else {
+            return 'Bitcoin está caro. Pode ser melhor esperar.'
+        }
+    }
+}
+
+/*
+BRL:
+    < R$300.000: Bom momento para compra!
+    Entre R$450.000 e R$300.000: Preço razoável. Avalie antes de comprar.
+    > R$450.000: Bitcoin está caro. Pode ser melhor esperar.
+USD:
+    < $60.000: Bom momento para compra!
+    Entre $60.000 e $80.000: Preço razoável. Avalie antes de comprar.
+    > $80.000: Bitcoin está caro. Pode ser melhor esperar.
+
+*/
